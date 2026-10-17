@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>المختبر الافتراضي — نشاط 2-1: الانتشار في محلول</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f1f5f9;--card:#fff;--ink:#14213d;--mut:#5b6b82;--line:#d9e1ec;--acc:#7b1fa2;--acc2:#0e7c86;--warn:#fff4cc;--warnb:#e0b400;--ok:#1b8a4b;--bad:#c62828;--soft:#f6f0fa}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1521;--card:#18202f;--ink:#e8eefb;--mut:#9fb0c9;--line:#2a364b;--acc:#d08cff;--acc2:#4fd1c5;--warn:#3a3210;--warnb:#b89200;--soft:#241a31}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Tajawal','Segoe UI',Tahoma,sans-serif;line-height:1.7;padding:12px;-webkit-text-size-adjust:100%}
+.wrap{max-width:1180px;margin:auto}
+h1{font-size:1.35rem;margin:4px 0 2px}h2{font-size:1.05rem;margin:0 0 8px}
+.sub{color:var(--mut);margin:0 0 10px;font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+.warn{background:var(--warn);border:1px solid var(--warnb);border-radius:12px;padding:10px 12px;margin-bottom:12px;font-size:.92rem}
+.lab{display:grid;grid-template-columns:minmax(0,540px) minmax(0,1fr);gap:12px;align-items:start}
+@media(max-width:900px){.lab{grid-template-columns:1fr}}
+canvas{display:block;max-width:100%;height:auto;border-radius:12px}
+#cv{width:100%;background:#e8eef4}
+.step{border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:8px}
+.step.on{border-color:var(--acc);background:var(--soft)}
+.step b.n{display:inline-block;width:24px;height:24px;border-radius:50%;background:var(--acc);color:#fff;text-align:center;line-height:24px;margin-left:6px;font-size:.85rem}
+.step p{margin:4px 0 8px;font-size:.88rem;color:var(--mut)}
+button,select{font:inherit;font-size:.9rem;border-radius:9px;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:6px 11px;cursor:pointer}
+button.p{background:var(--acc);color:#fff;border-color:var(--acc)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:6px;margin-bottom:8px}
+.stat{background:var(--soft);border-radius:10px;padding:6px 9px;font-size:.8rem;color:var(--mut)}
+.stat b{display:block;color:var(--ink);font-size:1rem}
+.phase{background:var(--soft);border-inline-start:4px solid var(--acc2);padding:8px 10px;border-radius:8px;font-size:.9rem;margin-top:8px}
+input[type=range]{width:150px;accent-color:var(--acc)}
+#gal{display:flex;flex-wrap:wrap;gap:8px}
+#gal figure{margin:0;text-align:center;font-size:.78rem;color:var(--mut)}#gal img{width:110px;border-radius:8px;border:1px solid var(--line);display:block}
+.q textarea{width:100%;min-height:64px;font:inherit;border:1px solid var(--line);border-radius:9px;padding:8px;background:var(--card);color:var(--ink)}
+.ans{display:none;background:var(--soft);border-radius:8px;padding:8px 10px;margin-top:6px;font-size:.9rem}
+#toast{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);background:#14213d;color:#fff;padding:9px 16px;border-radius:10px;font-size:.9rem;opacity:0;pointer-events:none;transition:.3s;max-width:92vw;z-index:9}
+#toast.show{opacity:1}
+.lblrow{display:flex;gap:6px;align-items:center;margin:4px 0;font-size:.88rem}
+.lblrow i{display:inline-block;width:22px;height:22px;border-radius:50%;background:#e53935;color:#fff;text-align:center;font-style:normal;line-height:22px;font-size:.8rem}
+.sm{font-size:.82rem;color:var(--mut)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>🧪 المختبر الافتراضي — نشاط 2-1: توضيح عملية الانتشار في محلول</h1>
+<p class="sub">المهارة: الملاحظة والقياس والتسجيل • محاكاة فيزيائية: انتشار + ذوبان + تيارات حمل ناتجة عن اختلاف الكثافة + قانون بير للون</p>
+<div class="warn">⚠️ <b>احرص دائماً</b> على الأخذ باحتياطات الأمان والسلامة المطلوبة عند التعامل مع المواد الكيميائية لمنع ملامستها الجلد. استخدم الملقط ولا تلمس بلورات برمنجنات البوتاسيوم (VII) بيدك.</div>
+
+<div class="lab">
+  <div class="card">
+    <canvas id="cv" width="520" height="560"></canvas>
+    <div class="phase" id="phase">ابدأ بالخطوة 1: اضغط مطوّلاً على زر الماء لتصبّ الكمية التي تريدها.</div>
+  </div>
+  <div>
+    <div class="card">
+      <div class="stats">
+        <div class="stat">كمية الماء<b id="sW">0 mL</b></div><div class="stat">الزمن<b id="sT">—</b></div>
+        <div class="stat">كتلة البلورة المتبقية<b id="sM">—</b></div>
+        <div class="stat">تجانس المحلول<b id="sU">—</b></div>
+        <div class="stat">سرعة تيارات الماء<b id="sV">0</b></div>
+      </div>
+      <div class="step on" id="st1"><b class="n">1</b><b>املأ كأساً زجاجية كبيرة بالماء ودعها عدة ساعات كي تسكن تماماً</b>
+        <p>اضغط مطوّلاً على الزر لينزل الماء من الأعلى، وارفع إصبعك عندما تصل إلى الكمية التي تريدها (من نحو 20 إلى 475 mL). بعد الصب يبقى الماء متحركاً، فانتظر حتى يسكن.</p>
+        <div class="row"><button class="p" id="bFill" style="touch-action:none;user-select:none;-webkit-user-select:none">💧 اضغط مطوّلاً لصبّ الماء</button><button id="bEmpty">🗑 أفرغ الكأس</button><button id="bWait" disabled>⏳ انتظر 3 ساعات</button></div></div>
+      <div class="step" id="st2"><b class="n">2</b><b>أسقط بحذر بلّورة صغيرة بالملقط في الماء</b>
+        <p>اختر المادة وحجم البلورة ودرجة حرارة الماء ثم أسقطها دون تحريك الكأس.</p>
+        <div class="row"><select id="sub"><option value="perm">برمنجنات البوتاسيوم KMnO₄ (بنفسجي)</option><option value="cu">كبريتات النحاس CuSO₄ (أزرق)</option><option value="dich">ثنائي كرومات البوتاسيوم K₂Cr₂O₇ (برتقالي)</option></select>
+        <select id="sz"><option value="0.5">بلورة صغيرة جداً</option><option value="1" selected>بلورة صغيرة</option><option value="3">بلورة متوسطة</option></select></div>
+        <div class="row" style="margin-top:6px"><label class="sm">درجة الحرارة: <b id="tv">20</b>°م <input type="range" id="tmp" min="5" max="60" value="20"></label></div>
+        <div class="row" style="margin-top:6px"><button class="p" id="bDrop" disabled>🥢 أسقط البلورة</button><button id="bReset" disabled>↺ أعد التجربة</button></div></div>
+      <div class="step" id="st3"><b class="n">3</b><b>دع الكأس من دون تحريك لعدّة أيام</b>
+        <p>سرّع الزمن. تُحدّ السرعة تلقائياً (حتى 90×) أثناء ذوبان البلورة وتيارات الحمل، لأنها تنتهي خلال دقائق؛ بعدها يمكنك المرور بالساعات والأيام.</p>
+        <div class="row"><select id="spd"><option value="1">1× (زمن حقيقي)</option><option value="10">10×</option><option value="30" selected>30× (نصف دقيقة/ث)</option><option value="90">90× (1.5 دقيقة/ث)</option><option value="600">600× (10 دقائق/ث)</option><option value="3600">ساعة/ث</option><option value="21600">6 ساعات/ث</option><option value="86400">يوم/ث</option></select>
+        <button id="bPause">⏸ إيقاف</button></div>
+        <div class="sm" id="effS"></div></div>
+      <div class="step" id="st4"><b class="n">4</b><b>ارسم الكأس مرة ثانية لتوضح كيف توزّع اللون</b>
+        <p>التقط رسماً في أوقات مختلفة (بعد ثوانٍ، دقائق، ساعات، أيام) وقارن.</p>
+        <button id="bSnap" disabled>📸 التقط رسماً الآن</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="card"><h2>📈 التركيز في ثلاث مناطق من الكأس (نسبةً إلى التركيز عند التجانس التام)</h2>
+<canvas id="ch" width="1000" height="260" style="width:100%"></canvas>
+<p class="sm">المحور الأفقي: الزمن بمقياس لوغاريتمي. الخط المتقطع = التركيز المتساوي (التجانس). تهبط المحاليل المركّزة إلى القاع أولاً، ثم يتساوى التركيز ببطء بالانتشار.</p></div>
+<div class="card"><h2>🖼️ رسوماتي</h2><div id="gal"><span class="sm">لا توجد رسومات بعد.</span></div></div>
+
+<div class="card"><h2>❓ أسئلة</h2>
+<div class="q"><b>1) لماذا كان مهماً ترك الماء كي لا يسكن تماماً قبل وضع البلّورة فيه؟</b><textarea></textarea><button data-a="a1">إظهار الإجابة النموذجية</button><div class="ans" id="a1">لأن حركة الماء (التيارات) تنقل الجسيمات الملوّنة وتخلطها بالقوة، فيتوزع اللون بالحمل لا بالانتشار وحده. وعندما يسكن الماء ينتقل اللون بالحركة العشوائية للجسيمات فقط، فنلاحظ الانتشار الحقيقي. <br><button data-t="stirdemo">🔬 جرّب: ضع البلورة في ماء متحرك</button></div></div>
+<hr style="border:0;border-top:1px solid var(--line)">
+<div class="q"><b>2) لماذا انتشر اللون في الماء في نهاية تجربتك؟</b><textarea></textarea><button data-a="a2">إظهار الإجابة النموذجية</button><div class="ans" id="a2">لأن جسيمات المادة الملوّنة (أيونات البرمنجنات) تتحرك حركة عشوائية وتصطدم بجزيئات الماء، فتنتقل من المنطقة الأعلى تركيزاً (قرب البلورة) إلى المنطقة الأقل تركيزاً، وتستمر حتى يتساوى التركيز في الماء كله. هذه هي عملية <b>الانتشار</b>.</div></div>
+<hr style="border:0;border-top:1px solid var(--line)">
+<div class="q"><b>3) اقترح ثلاثة أمور يمكنك إجراؤها لجعل اللون ينتشر بسرعة أكبر.</b><textarea></textarea><button data-a="a3">إظهار الإجابة النموذجية</button><div class="ans" id="a3">① رفع درجة حرارة الماء (طاقة حركية أكبر للجسيمات). ② تحريك الماء أو الخلط. ③ استخدام بلورة أصغر أو مسحوقاً ناعماً (مساحة سطح أكبر فيذوب أسرع)، أو استعمال ماء أقل عمقاً.<br><button data-t="hot">🔥 جرّب ماءً ساخناً (50°م)</button> <button data-t="stirdemo">🌊 جرّب إحداث موج وحركة</button></div></div>
+<p class="sm" style="margin-bottom:0">💡 ملاحظة: يمكنك تكرار التجربة بمادتين أخريين (كبريتات النحاس وثنائي كرومات البوتاسيوم) كما في الكتاب.</p>
+</div>
+</div>
+<div id="toast"></div>
+
+<script>
+const $=s=>document.querySelector(s);
+
+const NX=116,NYM=107,DX=0.075,W=NX*DX,S=NX+2,SZ=S*(NYM+2);let NY=NYM,H=NY*DX;
+const IX=(i,j)=>i+S*j, HD=Math.PI/4*W, CELLV=DX*DX*HD;
+const U=new Float32Array(SZ),V=new Float32Array(SZ),C=new Float32Array(SZ),P=new Float32Array(SZ),DV=new Float32Array(SZ),U0=new Float32Array(SZ),V0=new Float32Array(SZ),C0=new Float32Array(SZ);
+function setBnd(b,x){
+  for(let j=1;j<=NY;j++){x[IX(0,j)]=b==1?-x[IX(1,j)]:x[IX(1,j)];x[IX(NX+1,j)]=b==1?-x[IX(NX,j)]:x[IX(NX,j)];}
+  for(let i=1;i<=NX;i++){x[IX(i,0)]=b==2?-x[IX(i,1)]:x[IX(i,1)];x[IX(i,NY+1)]=b==2?-x[IX(i,NY)]:x[IX(i,NY)];}
+  x[IX(0,0)]=.5*(x[IX(1,0)]+x[IX(0,1)]);x[IX(NX+1,0)]=.5*(x[IX(NX,0)]+x[IX(NX+1,1)]);
+  x[IX(0,NY+1)]=.5*(x[IX(1,NY+1)]+x[IX(0,NY)]);x[IX(NX+1,NY+1)]=.5*(x[IX(NX,NY+1)]+x[IX(NX+1,NY)]);
+}
+function project(){
+  for(let j=1;j<=NY;j++)for(let i=1;i<=NX;i++){const k=IX(i,j);DV[k]=-.5*(U[k+1]-U[k-1]+V[k+S]-V[k-S]);}
+  setBnd(0,DV);setBnd(0,P);
+  for(let it=0;it<20;it++){
+    for(let j=1;j<=NY;j++)for(let i=1;i<=NX;i++){const k=IX(i,j);P[k]=(DV[k]+P[k-1]+P[k+1]+P[k-S]+P[k+S])*.25;}
+    setBnd(0,P);
+  }
+  for(let j=1;j<=NY;j++)for(let i=1;i<=NX;i++){const k=IX(i,j);U[k]-=.5*(P[k+1]-P[k-1]);V[k]-=.5*(P[k+S]-P[k-S]);}
+  setBnd(1,U);setBnd(2,V);
+}
+function advect(b,d,d0,uu,vv,dt){
+  for(let j=1;j<=NY;j++)for(let i=1;i<=NX;i++){
+    const k=IX(i,j);let x=i-dt*uu[k],y=j-dt*vv[k];
+    x=x<.5?.5:x>NX+.5?NX+.5:x;y=y<.5?.5:y>NY+.5?NY+.5:y;
+    const i0=x|0,j0=y|0,s1=x-i0,t1=y-j0,a=IX(i0,j0);
+    d[k]=(1-s1)*((1-t1)*d0[a]+t1*d0[a+S])+s1*((1-t1)*d0[a+1]+t1*d0[a+1+S]);
+  }
+  setBnd(b,d);
+}
+let waveOn=false;const UW=new Float32Array(SZ),VW=new Float32Array(SZ),UT=new Float32Array(SZ),VT=new Float32Array(SZ);
+let maxSp=0,massTarget=0; // cm/s, total dissolved mass (g) for conservation
+function fluidStep(dt,beta,ellScale){
+  const g=981/DX*beta,ell=0.1*ellScale/DX;let m=0;
+  for(let j=1;j<=NY;j++)for(let i=1;i<=NX;i++){
+    const k=IX(i,j);V[k]+=dt*g*C[k];
+    let s=Math.hypot(U[k],V[k]);
+    if(s>40){U[k]*=40/s;V[k]*=40/s;s=40;}
+    const ek=ell*(1+60*Math.exp(-C[k]/2e-4)),wf=(j===NY?5:j===NY-1?2:0)+(i===1||i===NX?3:0),f=1/(1+dt*(s/ek+1/15+wf));U[k]*=f;V[k]*=f;
+    if(s*f>m)m=s*f;
+  }
+  maxSp=m*DX;
+  setBnd(1,U);setBnd(2,V);project();
+  U0.set(U);V0.set(V);C0.set(C);
+  advect(1,U,U0,U0,V0,dt);advect(2,V,V0,U0,V0,dt);project();
+  if(waveOn){for(let k=0;k<SZ;k++){UT[k]=U[k]+UW[k];VT[k]=V[k]+VW[k];}advect(0,C,C0,UT,VT,dt);}else advect(0,C,C0,U,V,dt);
+  C0.set(C);
+  for(let j=1;j<=NY;j++)for(let i=1;i<=NX;i++){const k=IX(i,j),mm=Math.min(.2,.35*dt*Math.hypot(U[k],V[k]));if(mm>1e-4)C[k]=C0[k]+mm*(.25*(C0[k-1]+C0[k+1]+C0[k-S]+C0[k+S])-C0[k]);}
+  setBnd(0,C);
+  if(massTarget>0){let t=0;for(let j=1;j<=NY;j++)for(let i=1;i<=NX;i++)t+=C[IX(i,j)];t*=CELLV;if(t>0){const r=massTarget/t;for(let k=0;k<SZ;k++)C[k]*=r;}}
+}
+function diffuse(dt,D){
+  const a=D*dt/(DX*DX),n=Math.max(1,Math.ceil(a)),as=a/n;
+  for(let s=0;s<n;s++){
+    C0.set(C);
+    for(let it=0;it<12;it++){
+      for(let j=1;j<=NY;j++)for(let i=1;i<=NX;i++){const k=IX(i,j);C[k]=(C0[k]+as*(C[k-1]+C[k+1]+C[k-S]+C[k+S]))/(1+4*as);}
+      setBnd(0,C);
+    }
+  }
+}
+function addVortices(n,amp,R){
+  for(let q=0;q<n;q++){
+    const cx=3+Math.random()*(NX-6),cy=3+Math.random()*(NY-6),sg=Math.random()<.5?-1:1,Rc=R/DX*(.7+Math.random()*.6),A=amp/DX;
+    for(let j=1;j<=NY;j++)for(let i=1;i<=NX;i++){
+      const dx=i-cx,dy=j-cy,f=Math.exp(-(dx*dx+dy*dy)/(Rc*Rc)),k=IX(i,j);
+      U[k]+=-sg*A*dy/Rc*f;V[k]+=sg*A*dx/Rc*f;
+    }
+  }
+  setBnd(1,U);setBnd(2,V);project();
+}
+
+
+/* ---------- المواد ---------- */
+const SUBS={
+ perm:{name:'بلورة برمنجنات البوتاسيوم',M:158,sol:.064,sk:.032,D:1.6e-5,eps:[180,2400,380],beta:.625,rho:2.7,k:.0108,m:.01,col:'#3a0a47'},
+ cu:{name:'بلورة كبريتات النحاس',M:249.7,sol:.203,sk:.018,D:.72e-5,eps:[6,1.4,.2],beta:.89,rho:2.29,k:.0108,m:.05,col:'#1f5fd1'},
+ dich:{name:'بلورة ثنائي كرومات البوتاسيوم',M:294,sol:.115,sk:.03,D:1.2e-5,eps:[2,40,380],beta:.65,rho:2.68,k:.0108,m:.02,col:'#e0561b'}
+};
+const eta=T=>.02414*Math.pow(10,247.8/(T+133.15));
+/* ---------- الحالة ---------- */
+const CW=520,CH=560,X0=100,PXCM=330/W,Yb=482,HMAX=NYM*DX;let Yt=Yb-H*PXCM,level=0,pouring=false;
+let stage=0,fill=0,fillT=0,cr={state:'none',x:0,y:0,m:0,rot:0},holdT=0,t=0,run=true,lastTs=0,waited=0,effSpeed=1,stirredDrop=false;
+let series=[],lastSample=0,uni=0,dissolved=0,labelInfo=null,snapN=0;
+const cv=$('#cv'),g=cv.getContext('2d'),fc=document.createElement('canvas');fc.width=NX+2;fc.height=NY+2;const fg=fc.getContext('2d');let img=fg.createImageData(NX+2,NY+2);
+const chord=new Float32Array(NX+2);for(let i=1;i<=NX;i++){const s=((i-.5)/NX)*2-1;chord[i]=Math.max(.12,(4/Math.PI)*Math.sqrt(Math.max(0,1-s*s)))*HD;}chord[0]=chord[1];chord[NX+1]=chord[NX];
+const sub=()=>SUBS[$('#sub').value],TT=()=>+$('#tmp').value;
+const Dcoef=()=>sub().D*(TT()+273.15)/293.15*eta(20)/eta(TT());
+const csat=()=>sub().sol*Math.exp(sub().sk*(TT()-20));
+const rad=()=>Math.cbrt(3*cr.m/(4*Math.PI*sub().rho));
+function toast(m){const e=$('#toast');e.textContent=m;e.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('show'),3800);}
+function fmtT(s){if(s<60)return s.toFixed(1)+' ث';if(s<3600)return Math.floor(s/60)+' د '+Math.floor(s%60)+' ث';if(s<86400)return Math.floor(s/3600)+' س '+Math.floor(s%3600/60)+' د';return Math.floor(s/86400)+' يوم '+Math.floor(s%86400/3600)+' س';}
+function clearField(){U.fill(0);V.fill(0);C.fill(0);P.fill(0);massTarget=0;dissolved=0;maxSp=0;}
+function setStep(n){for(let i=1;i<=4;i++)$('#st'+i).classList.toggle('on',i===n);}
+/* ---------- البلورة ---------- */
+//WAVE-START
+/* موجات سطح الماء: أنماط ذبذبة (تشتت حقيقي ω²=gk·tanh kh) مع انعكاس تام عند الجدران، وحقل سرعة جهدي ينقل اللون */
+const NM=14,wa=new Float64Array(NM+1),wv=new Float64Array(NM+1);let waveSp=0;
+const Sx=[],Cx=[],Zc=[],Zs=[];
+for(let n=1;n<=NM;n++){const k=n*Math.PI/W;Sx[n]=new Float32Array(NX+2);Cx[n]=new Float32Array(NX+2);for(let i=0;i<=NX+1;i++){const x=Math.min(W,Math.max(0,(i-.5)*DX));Sx[n][i]=Math.sin(k*x);Cx[n][i]=Math.cos(k*x);}}
+function buildZ(hh){for(let n=1;n<=NM;n++){const k=n*Math.PI/W,sh=Math.sinh(k*hh);Zc[n]=new Float32Array(NY+2);Zs[n]=new Float32Array(NY+2);for(let j=0;j<=NY+1;j++){const z=Math.max(0,Math.min(hh,hh-(j-.5)*DX));Zc[n][j]=Math.cosh(k*z)/sh;Zs[n][j]=Math.sinh(k*z)/sh;}}}
+buildZ(H);
+function waveStep(h,hh){
+  let s2=0;
+  for(let n=1;n<=NM;n++){
+    const k=n*Math.PI/W,w2=981*k*Math.tanh(k*Math.max(hh,.05)),gm=.25+.08*n,wd=Math.sqrt(Math.max(w2-gm*gm,1e-4)),e=Math.exp(-gm*h),c=Math.cos(wd*h),s=Math.sin(wd*h),a=wa[n],v=wv[n];
+    wa[n]=e*(a*c+(v+gm*a)/wd*s);wv[n]=e*(v*c-(gm*v+w2*a)/wd*s);
+    const lim=.3/Math.sqrt(n);if(Math.abs(wa[n])>lim){wa[n]=Math.sign(wa[n])*lim;wv[n]*=.5;}
+    s2+=wv[n]*wv[n];
+  }
+  waveSp=Math.sqrt(s2);
+}
+function kickWaves(x,amp){for(let n=1;n<=NM;n++)wv[n]+=amp*Math.cos(n*Math.PI*x/W)/Math.sqrt(n);}
+function pourForce(dt){
+  const x0=W/2+(Math.random()-.5)*.3,F=1.4*(1+1.5/(.5+level))*Math.sqrt(dt*60);
+  for(let n=1;n<=NM;n++)wv[n]+=F*(Math.random()*2-1)*Math.cos(n*Math.PI*x0/W)/Math.sqrt(n);
+}
+function computeWaveVel(){
+  if(waveSp<0.02){waveOn=false;return;}
+  waveOn=true;
+  for(let j=1;j<=NY;j++)for(let i=1;i<=NX;i++){let u=0,w=0;for(let n=1;n<=NM;n++){const q=wv[n];u-=q*Sx[n][i]*Zc[n][j];w+=q*Cx[n][i]*Zs[n][j];}const k=IX(i,j);UW[k]=u/DX;VW[k]=-w/DX;}
+}
+function killWaves(){wa.fill(0);wv.fill(0);waveSp=0;waveOn=false;}
+/* دوران بطيء ناتج عن تيار الصب: يهبط وسط الكأس ويصعد قرب الجدران */
+function setPourCirc(A){
+  A*=Math.min(1,H/3);
+  for(let j=1;j<=NY;j++)for(let i=1;i<=NX;i++){const x=(i-.5)*DX,y=(j-.5)*DX,k=IX(i,j),ph=2*Math.PI*(x-W/2)/W;
+    V[k]=A*Math.cos(ph)*Math.sin(Math.PI*y/H)/DX;U[k]=-A*(W/2/H)*Math.sin(ph)*Math.cos(Math.PI*y/H)/DX;}
+  setBnd(1,U);setBnd(2,V);project();
+}
+function agitate(){kickWaves(Math.random()*W,7);kickWaves(Math.random()*W,5);setPourCirc(2.5);}
+//WAVE-END
+function crystalStep(h){
+  const sb=sub();
+  if(cr.state==='falling'){cr.y+=5*eta(20)/eta(TT())*h;cr.rot+=h*3;if(cr.y>=H-rad()){cr.y=H-rad();cr.state='rest';}}
+  if(cr.state==='falling'||cr.state==='rest'){
+    const r=Math.max(rad(),.01),rc=Math.max(.9,(r+DX*.5)/DX),ci=Math.floor(cr.x/DX)+1,cj=Math.floor(cr.y/DX)+1,ids=[];let sc=0;
+    for(let j=Math.max(1,cj-3);j<=Math.min(NY,cj+3);j++)for(let i=Math.max(1,ci-3);i<=Math.min(NX,ci+3);i++){if(Math.hypot(i-ci,j-cj)<=rc){ids.push(IX(i,j));sc+=C[IX(i,j)];}}
+    if(!ids.length)ids.push(IX(Math.min(NX,Math.max(1,ci)),Math.min(NY,Math.max(1,cj))));
+    const Cl=sc/ids.length,cs=csat(),kk=sb.k*Dcoef()/sb.D;
+    if(Cl<cs){let dm=Math.min(cr.m,kk*4*Math.PI*r*r*(cs-Cl)*h),add=0;
+      for(const k of ids){const nc=Math.min(cs,C[k]+dm/(ids.length*CELLV));add+=(nc-C[k])*CELLV;C[k]=nc;}
+      cr.m-=add;massTarget+=add;}
+    if(cr.m<2e-7){cr.m=0;cr.state='gone';}
+  }
+}
+function simulate(dtReal){
+  const wantSp=+$('#spd').value,fluidOn=()=>maxSp>0.03||cr.state==='falling'||cr.state==='rest';
+  const cap=waveSp>0.02?1:cr.state==='falling'?4:fluidOn()?90:1e9;effSpeed=Math.min(wantSp,cap);
+  let rem=dtReal*effSpeed;if(rem<=0)return;
+  const act=cr.state==='falling'||cr.state==='rest'||cr.state==='gone',fl0=fluidOn();
+  let base=cr.state==='falling'?.05:fl0?.4:(cr.state==='gone'?60:300);base=Math.max(base,rem/(fl0?5:80));
+  const sb=sub(),D=Dcoef(),es=eta(20)/eta(TT());
+  while(rem>1e-9){
+    const h=Math.min(rem,base);rem-=h;
+    waveStep(h,level);computeWaveVel();
+    if(cr.state==='gone'&&t>900){maxSp=0;U.fill(0);V.fill(0);}
+    else if(fluidOn())fluidStep(h,sb.beta,es);else{maxSp=0;U.fill(0);V.fill(0);}
+    crystalStep(h);diffuse(h,D);if(act)t+=h;
+  }
+}
+/* ---------- إحصاءات ---------- */
+function stats(){
+  let s=0,s2=0;for(let j=1;j<=NY;j++)for(let i=1;i<=NX;i++){const c=C[IX(i,j)];s+=c;s2+=c*c;}
+  const n=NX*NY,mean=s/n;dissolved=s*CELLV;
+  uni=mean>1e-12?Math.max(0,1-Math.sqrt(Math.max(0,s2/n-mean*mean))/mean):0;
+  if(cr.state!=='none'&&cr.state!=='holding'&&t>=lastSample*1.035&&mean>0){
+    lastSample=Math.max(t,1);
+    const b=(a,z)=>{let q=0,c=0;for(let j=a;j<z;j++)for(let i=1;i<=NX;i++){q+=C[IX(i,j)];c++;}return q/c/mean;};
+    series.push([t,b(1,Math.floor(NY*.2)),b(Math.floor(NY*.4),Math.floor(NY*.6)),b(Math.floor(NY*.8),NY+1)]);
+  }
+}
+/* ---------- الرسم ---------- */
+function drawBeaker(){
+  g.clearRect(0,0,CW,CH);
+  let bg=g.createLinearGradient(0,0,0,CH);bg.addColorStop(0,'#dfe7ef');bg.addColorStop(1,'#c9d4df');g.fillStyle=bg;g.fillRect(0,0,CW,CH);
+  g.fillStyle='#fbfdff';g.beginPath();g.roundRect(58,70,404,430,16);g.fill();
+  g.fillStyle='#b9c4d0';g.fillRect(0,498,CW,62);g.fillStyle='rgba(0,0,0,.18)';g.beginPath();g.ellipse(265,500,185,9,0,0,7);g.fill();
+  const wpx=W*PXCM,wh=level*PXCM,wy=Yb-wh;
+  if(wh>1){
+    const NP=48,ETA=[];for(let q=0;q<=NP;q++){const x=q/NP*W;let e=0;for(let n=1;n<=NM;n++)e+=wa[n]*Math.cos(n*Math.PI*x/W);ETA.push(Math.max(-.45*level,Math.min(.45*level,Math.max(-.4,Math.min(.4,e)))));}
+    g.save();g.beginPath();g.moveTo(X0,wy-ETA[0]*PXCM);for(let q=1;q<=NP;q++)g.lineTo(X0+q/NP*wpx,wy-ETA[q]*PXCM);
+    const rr=Math.min(14,wh*.8);g.lineTo(X0+wpx,Yb-rr);g.quadraticCurveTo(X0+wpx,Yb,X0+wpx-rr,Yb);g.lineTo(X0+rr,Yb);g.quadraticCurveTo(X0,Yb,X0,Yb-rr);g.closePath();g.clip();
+    g.fillStyle='rgb(201,229,247)';g.fillRect(X0,wy-30,wpx,wh+30);
+    if(stage>=2&&!pouring){
+      const sb=sub(),e=sb.eps;let p=0;
+      for(let j=0;j<=NY+1;j++)for(let i=0;i<=NX+1;i++){
+        const c=C[IX(i,j)];let r=1,gg=1,b=1;
+        if(c>1e-10){const mol=c*1000/sb.M*chord[i];r=Math.pow(10,-e[0]*mol);gg=Math.pow(10,-e[1]*mol);b=Math.pow(10,-e[2]*mol);}
+        const wt=Math.min(r,gg,b),q=1-wt;
+        img.data[p++]=255*Math.pow(r,.4545)*q+201*wt;img.data[p++]=255*Math.pow(gg,.4545)*q+229*wt;img.data[p++]=255*Math.pow(b,.4545)*q+247*wt;img.data[p++]=255;
+      }
+      fg.putImageData(img,0,0);g.imageSmoothingEnabled=true;g.imageSmoothingQuality='low';g.drawImage(fc,X0-DX*PXCM,Yt-DX*PXCM,(NX+2)*DX*PXCM,(NY+2)*DX*PXCM);
+    }
+    let sh=g.createLinearGradient(X0,0,X0+wpx,0);sh.addColorStop(0,'rgba(20,70,110,.16)');sh.addColorStop(.25,'rgba(20,70,110,0)');sh.addColorStop(.75,'rgba(20,70,110,0)');sh.addColorStop(1,'rgba(20,70,110,.16)');g.fillStyle=sh;g.fillRect(X0,wy,wpx,wh);
+    g.restore();
+    g.strokeStyle='rgba(255,255,255,.85)';g.lineWidth=2.5;g.beginPath();for(let q=0;q<=NP;q++){const xx=X0+q/NP*wpx,yy=wy-ETA[q]*PXCM;q?g.lineTo(xx,yy):g.moveTo(xx,yy);}g.stroke();
+  }
+  // البلورة
+  if(cr.state!=='none'&&cr.state!=='gone'){
+    const r=Math.max(2.2,(cr.m>0?rad():.1)*PXCM*1.2),px=X0+cr.x*PXCM,py=cr.state==='holding'?Yt-70+holdT/1.0*(70+8):Yt+cr.y*PXCM;
+    g.save();g.translate(px,py);g.rotate(cr.rot);g.fillStyle=sub().col;g.strokeStyle='rgba(255,255,255,.6)';g.lineWidth=1;g.beginPath();
+    for(let k=0;k<6;k++){const a=k*Math.PI/3,rr=r*(k%2?.8:1);g.lineTo(Math.cos(a)*rr,Math.sin(a)*rr);}g.closePath();g.fill();g.stroke();g.restore();
+    if(holdT<2.1){ // الملقط
+      const tipy=cr.state==='holding'?py:Yt+8-Math.max(0,holdT-1)*90,tipx=px+Math.max(0,holdT-1)*70;
+      g.strokeStyle='#8a97a6';g.lineWidth=3;g.lineCap='round';
+      for(const d of[-3,3]){g.beginPath();g.moveTo(tipx+d,tipy-r+1);g.lineTo(tipx+d*5+70,tipy-r-150);g.stroke();}
+    }
+  }
+  // صب الماء
+  if(pouring){g.strokeStyle='rgba(90,160,215,.8)';g.lineWidth=7;g.lineCap='round';g.beginPath();g.moveTo(X0+wpx/2,50);g.lineTo(X0+wpx/2,wy);g.stroke();g.fillStyle='rgba(255,255,255,.6)';g.beginPath();g.ellipse(X0+wpx/2,wy,16,3,0,0,7);g.fill();g.fillStyle='#8aa0b5';g.beginPath();g.roundRect(X0+wpx/2-22,20,44,32,6);g.fill();}
+  // الزجاج
+  const gx0=X0-5,gx1=X0+wpx+5,gy=92;
+  g.beginPath();g.moveTo(gx0-8,gy-6);g.lineTo(gx0,gy);g.lineTo(gx0,Yb-14);g.quadraticCurveTo(gx0,Yb+5,gx0+19,Yb+5);g.lineTo(gx1-19,Yb+5);g.quadraticCurveTo(gx1,Yb+5,gx1,Yb-14);g.lineTo(gx1,gy);g.lineTo(gx1+8,gy-6);
+  g.fillStyle='rgba(180,215,235,.10)';g.fill();g.strokeStyle='rgba(95,130,155,.8)';g.lineWidth=3;g.stroke();
+  let hl=g.createLinearGradient(gx0,0,gx0+34,0);hl.addColorStop(0,'rgba(255,255,255,.55)');hl.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=hl;g.fillRect(gx0+3,gy+8,30,Yb-gy-30);
+  hl=g.createLinearGradient(gx1,0,gx1-18,0);hl.addColorStop(0,'rgba(255,255,255,.35)');hl.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=hl;g.fillRect(gx1-18,gy+8,15,Yb-gy-30);
+  // تدريج
+  g.fillStyle='#37506a';g.strokeStyle='#37506a';g.lineWidth=1.5;g.font='12px Tajawal,sans-serif';g.textAlign='left';
+  for(let v=100;v<=400;v+=100){const y=Yb-v/(Math.PI/4*W*W)*PXCM;g.beginPath();g.moveTo(gx1-2,y);g.lineTo(gx1-24,y);g.stroke();g.fillText(v+' mL',gx1+10,y+4);}
+}
+function drawChart(){
+  const c=$('#ch'),x=c.getContext('2d'),w=c.width,h=c.height,L=50,R=14,Tp=12,B=28;x.clearRect(0,0,w,h);
+  const st=getComputedStyle(document.body),ink=st.color,mut='#8a97a6';x.font='14px Tajawal,sans-serif';x.fillStyle=ink;x.strokeStyle=mut;x.lineWidth=1;
+  const t0=0,t1=Math.log10(864000*1.2),X=v=>L+(Math.log10(Math.max(v,1))-t0)/(t1-t0)*(w-L-R),Y=v=>Tp+(1-Math.min(v,3)/3)*(h-Tp-B);
+  x.beginPath();x.moveTo(L,Tp);x.lineTo(L,h-B);x.lineTo(w-R,h-B);x.stroke();x.textAlign='center';
+  [[1,'1 ث'],[60,'1 د'],[3600,'1 س'],[86400,'1 يوم'],[864000,'10 أيام']].forEach(([v,l])=>{x.fillText(l,X(v),h-8);x.beginPath();x.moveTo(X(v),h-B);x.lineTo(X(v),h-B+4);x.stroke();});
+  x.textAlign='right';[0,1,2,3].forEach(v=>x.fillText(v+'×',L-6,Y(v)+5));
+  x.setLineDash([6,5]);x.beginPath();x.moveTo(L,Y(1));x.lineTo(w-R,Y(1));x.stroke();x.setLineDash([]);
+  [[1,'#e53935','الأعلى'],[2,'#fb8c00','الوسط'],[3,'#3949ab','القاع']].forEach(([k,col,nm],q)=>{
+    x.strokeStyle=col;x.lineWidth=2.5;x.beginPath();series.forEach((s,i)=>{i?x.lineTo(X(s[0]),Y(s[k])):x.moveTo(X(s[0]),Y(s[k]));});x.stroke();
+    x.fillStyle=col;x.textAlign='left';x.fillText('● '+nm,w-R-90,Tp+16+q*18);
+  });
+}
+/* ---------- واجهة ---------- */
+function phaseText(){
+  if(stage===0)return 'ابدأ بالخطوة 1: اضغط مطوّلاً على زر الماء لتصبّ الكمية التي تريدها.';
+  if(stage===1)return 'يُصبّ الماء… ارفع إصبعك عند الكمية المطلوبة.';
+  if(cr.state==='none')return waveSp>0.02?'تتردد موجات على سطح الماء وترتد عن جدران الكأس وقاعه؛ انتظر حتى تهدأ قبل إسقاط البلورة.':maxSp>0.03?'الماء ما زال متحركاً (تيارات ناتجة عن الصب). انتظر حتى يسكن قبل إسقاط البلورة.':'الماء ساكن ✔ — يمكنك الآن إسقاط البلورة بالملقط.';
+  if(cr.state==='holding')return 'تُنزَل البلورة بالملقط حتى سطح الماء…';
+  if(cr.state==='falling')return 'تهوي البلورة خلال الماء لأن كثافتها أكبر، وتبدأ بالذوبان تاركةً أثراً ملوّناً.';
+  if(cr.state==='rest')return 'تذوب البلورة: المحلول المركّز قربها أكثف من الماء، فيهبط وينساب على قاع الكأس (تيارات حمل) بينما يبدأ الانتشار الجزيئي.';
+  if(maxSp>0.03)return 'انتهى ذوبان البلورة وما زالت تيارات الحمل تخلط المحلول.';
+  if(uni<0.97)return 'توقف الحمل تقريباً. يستمر الانتشار الجزيئي ببطء: ينتقل اللون من الأسفل (مرتفع التركيز) إلى الأعلى (منخفض التركيز).';
+  return 'تساوى التركيز تقريباً في الكأس كلها: توزّع اللون بانتظام (اتزان ديناميكي).';
+}
+function ui(){
+  const act=cr.state!=='none';
+  $('#sT').textContent=act&&cr.state!=='holding'?fmtT(t):'—';
+  $('#sM').textContent=act&&cr.state!=='holding'?(cr.m*1000).toFixed(2)+' mg':'—';
+  $('#sU').textContent=act&&cr.state!=='holding'?(uni*100).toFixed(0)+'%':'—';
+  $('#sV').textContent=Math.max(maxSp,waveSp)>0.003?(Math.max(maxSp,waveSp)*10).toFixed(2)+' mm/s':'ساكن';
+  $('#phase').textContent=phaseText();
+  const ready=stage>=2;
+  $('#sW').textContent=(level*Math.PI/4*W*W).toFixed(0)+' mL';$('#bFill').disabled=act;$('#bWait').disabled=!ready||act;
+  $('#bDrop').disabled=!ready||act;$('#bReset').disabled=!act;
+  $('#bSnap').disabled=!(cr.state==='falling'||cr.state==='rest'||cr.state==='gone');
+  const sp=+$('#spd').value;$('#effS').textContent=effSpeed<sp&&run?'⚠ السرعة محدودة تلقائياً بـ '+effSpeed+'× ما دامت الموجات أو ذوبان البلورة وتيارات الحمل نشطة':'';
+  setStep(!ready?1:act?3:2);
+}
+function frame(ts){
+  const dt=Math.min((ts-(lastTs||ts))/1000,.05);lastTs=ts;
+  if(pouring){level=Math.min(HMAX,level+1.0*dt);pourForce(dt);waveStep(dt,level);if(level>=HMAX)commitWater();}
+  if(cr.state==='holding'){holdT+=dt;if(holdT>=1){cr.state='falling';t=0;cr.y=.15;kickWaves(cr.x,.8);}}
+  else if(cr.state==='falling'||cr.state==='rest'||cr.state==='gone'){if(holdT<2.1)holdT+=dt;}
+  if(run&&stage>=2&&cr.state!=='holding'){simulate(dt);}
+  else if(run&&stage>=2){simulate(dt);}
+  if(stage>=2){stats();}
+  drawBeaker();ui();if(ts%3<1)drawChart();
+  requestAnimationFrame(frame);
+}
+function commitWater(){
+  pouring=false;
+  if(level<.3){level=0;stage=0;killWaves();toast('كمية الماء قليلة جداً — اصبّ أكثر قليلاً.');return;}
+  NY=Math.min(NYM,Math.max(4,Math.round(level/DX)));H=NY*DX;level=H;Yt=Yb-H*PXCM;fc.height=NY+2;img=fg.createImageData(NX+2,NY+2);
+  clearField();series=[];lastSample=0;stage=2;buildZ(H);setPourCirc(.6);
+}
+function emptyAll(){pouring=false;level=0;stage=0;cr={state:'none',x:0,y:0,m:0,rot:0};holdT=0;t=0;series=[];NY=NYM;H=NY*DX;Yt=Yb-H*PXCM;buildZ(H);killWaves();clearField();}
+function resetRun(still){
+  clearField();cr={state:'none',x:0,y:0,m:0,rot:0};holdT=0;t=0;series=[];lastSample=0;uni=0;
+  killWaves();
+}
+$('#bFill').addEventListener('pointerdown',e=>{e.preventDefault();if(cr.state!=='none'||level>=HMAX)return;pouring=true;stage=1;});
+['pointerup','pointercancel','blur'].forEach(ev=>window.addEventListener(ev,()=>{if(pouring)commitWater();}));
+$('#bFill').addEventListener('contextmenu',e=>e.preventDefault());
+$('#bEmpty').onclick=()=>emptyAll();
+$('#bWait').onclick=()=>{U.fill(0);V.fill(0);maxSp=0;killWaves();waited+=3;toast('مرّت 3 ساعات: سكن الماء تماماً ✔');};
+function drop(){
+  if(Math.max(maxSp,waveSp*.3)>0.05)toast('⚠ الماء ما زال متحركاً! سيحمل التيار اللون ولن ترى الانتشار وحده.');
+  const sb=sub();cr={state:'holding',x:W/2+(Math.random()-.5)*.8,y:0,m:sb.m*(+$('#sz').value),rot:Math.random()*3};holdT=0;t=0;series=[];lastSample=0;massTarget=0;C.fill(0);
+}
+$('#bDrop').onclick=drop;
+$('#bReset').onclick=()=>{resetRun(true);toast('أُعيدت التجربة بماء ساكن.');};
+['sub','sz'].forEach(i=>$('#'+i).onchange=()=>{if(cr.state!=='none')resetRun(true);});
+$('#tmp').oninput=e=>{$('#tv').textContent=e.target.value;};
+$('#bPause').onclick=()=>{run=!run;$('#bPause').textContent=run?'⏸ إيقاف':'▶ تشغيل';};
+$('#bSnap').onclick=()=>{
+  const f=document.createElement('figure'),im=new Image();im.src=cv.toDataURL('image/png');const cp=document.createElement('figcaption');cp.textContent='بعد '+fmtT(t);f.append(im,cp);
+  const gl=$('#gal');if(!snapN)gl.innerHTML='';gl.append(f);snapN++;toast('تم حفظ الرسم ✔');
+};
+document.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{const e=$('#'+b.dataset.a);e.style.display=e.style.display==='block'?'none':'block';});
+document.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{
+  if(stage<2){toast('اصبّ الماء في الكأس أولاً (الخطوة 1).');return;}
+  if(b.dataset.t==='hot'){$('#tmp').value=50;$('#tv').textContent=50;resetRun(true);drop();$('#spd').value='30';}
+  else{resetRun(true);agitate();drop();toast('أُسقطت البلورة في ماء متحرك — قارن الانتشار بالحالة الساكنة.');}
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
